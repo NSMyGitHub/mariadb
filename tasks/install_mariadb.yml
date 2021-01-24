@@ -1,0 +1,47 @@
+---
+# tasks file for test2
+#
+- name: Include OS specic variables
+  include_vars: "{{ ansible_os_family }}.yml"
+ #  
+- name: Install a pre-req for Debian and make sure package cache is up to date
+  apt:
+        name:
+          apt-transport-https
+        update_cache: yes
+        cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+  become: true
+ #
+- name: Create a folder for the download
+  file:
+        path: /opt/MariaDB
+        state: directory
+        mode: 0755
+        owner: root
+        group: root
+  become: yes
+ #
+- name: Download setup
+  get_url:
+         url: https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+         dest: /opt/MariaDB
+         mode: 0755
+  become: yes
+ #
+- name: Run setup
+  command: /opt/MariaDB/mariadb_repo_setup
+  become: yes
+#
+- name: Install database server 
+  package:
+          name: "{{ mariadb_package }}"
+          state: present
+  become: yes
+#
+- name: Start service
+  service:
+          name: "{{ mariadb_service }}"
+          state: started
+          enabled: yes
+  become: yes

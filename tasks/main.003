@@ -1,0 +1,26 @@
+---
+# tasks file for test2
+#
+- name: Include OS and version specific variables
+  include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
+#
+- name: What variable was imported
+  debug:
+          msg: "The Distro is <{{ ansible_distribution }}> ,the Version is <{{ ansible_distribution_major_version }}> the BaseURL is <{{ theurlbase }}> and the GPGKey is <{{ thegpgkey }}>"
+#
+- name: Install MariaDB 10.5
+  dnf:
+          name:
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/galera-4-26.4.6-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-server-10.5.8-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-shared-10.5.8-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-client-10.5.8-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-common-10.5.8-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-columnstore-engine-10.5.8-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-compat-10.5.8-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-cracklib-password-check-10.5.8-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-gssapi-server-10.5.8-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-rocksdb-engine-10.5.8-1.el8.x86_64.rpm"
+                  - "https://mirrors.ukfast.co.uk/sites/mariadb/yum/10.5/centos8-amd64/rpms/MariaDB-s3-engine-10.5.8-1.el8.x86_64.rpm"
+          state: present
+  become: yes

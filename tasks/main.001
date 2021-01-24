@@ -1,0 +1,35 @@
+---
+# tasks file for test2
+#
+- name: Create a folder for the download
+  file:
+        path: /opt/MariaDB
+        state: directory
+        mode: 0755
+        owner: root
+        group: root
+  become: yes
+#
+- name: Download repo installation script
+  get_url:
+         url: https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+         dest: /opt/MariaDB
+         mode: 0755
+  become: yes
+#
+- name: Run repo installation script
+  command: /opt/MariaDB/mariadb_repo_setup
+  become: yes
+#
+- name: Install MariaDB
+  package:
+          name: MariaDB-server
+          state: present
+  become: yes
+#
+- name: Start MariabDB service
+  service:
+          name: mariadb.service
+          state: started
+          enabled: yes
+  become: yes
